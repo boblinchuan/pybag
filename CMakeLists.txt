@@ -105,7 +105,6 @@ pybind11_add_module(core
   ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/layout.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/logging.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/name.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/oa.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/rtree.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/schematic.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/tech.cpp

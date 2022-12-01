@@ -53,6 +53,7 @@ limitations under the License.
 #include <pybag/logging.h>
 #include <pybag/name.h>
 #include <pybag/oa.h>
+#include <pybag/schematic.h>
 #include <pybag/rtree.h>
 #include <pybag/tech.h>
 #include <pybag/transform.h>
@@ -75,7 +76,8 @@ PYBIND11_MODULE(core, m) {
     // make sure tech/routing grid are defined before binding gds
     bind_gds(m);
     // make sure routing grid and tr_colors are defined before binding OA
-    bind_oa(m);
+//    bind_oa(m);
+    bind_schematic(m);
     bind_rtree(m);
     bind_logging(m);
     bind_name(m);

@@ -44,11 +44,11 @@
 
 # this script builds the C++ extension
 
-if [ -z ${OA_LINK_DIR+x} ]
-then
-    echo "OA_LINK_DIR is unset"
-    exit 1
-fi
+#if [ -z ${OA_LINK_DIR+x} ]
+#then
+#    echo "OA_LINK_DIR is unset"
+#    exit 1
+#fi
 
 export NUM_CORES=$(nproc --all)
 export NUM_CORES=$((NUM_CORES / 2))
