@@ -181,6 +181,37 @@ class const_conn_iterator {
     }
 };
 
+class const_param_iterator {
+  public:
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = std::pair<std::string, cbag::value_t>;
+    using difference_type = cbag::param_map::const_iterator::difference_type;
+    using pointer = const value_type *;
+    using reference = const value_type &;
+
+  private:
+    cbag::param_map::const_iterator iter_;
+
+  public:
+    const_param_iterator() = default;
+    const_param_iterator(cbag::param_map::const_iterator val) : iter_(std::move(val)) {}
+
+    bool operator==(const const_param_iterator &other) const { return iter_ == other.iter_; }
+    bool operator!=(const const_param_iterator &other) const { return iter_ != other.iter_; }
+
+    value_type operator*() const { return {iter_->first, iter_->second}; }
+
+    const_param_iterator &operator++() {
+        ++iter_;
+        return *this;
+    }
+    const_param_iterator operator++(int) {
+        const_param_iterator ans(iter_);
+        operator++();
+        return ans;
+    }
+};
+
 // python/C++ interface functions for cellview
 pyg::PyIterator<std::pair<std::string, c_instance>> inst_ref_iter(const c_cellview &cv) {
     return pyg::make_iterator(const_inst_iterator(cv.instances.begin()),
@@ -192,9 +223,14 @@ pyg::PyIterator<std::pair<std::string, int>> terminals_iter(const c_cellview &cv
                               const_term_iterator(cv.terminals.end()));
 }
 
-pyg::PyIterator<std::pair<std::string, int>> connections_iter(const c_instance &inst) {
+pyg::PyIterator<std::pair<std::string, std::string>> connections_iter(const c_instance &inst) {
     return pyg::make_iterator(const_conn_iterator(inst.connections.begin()),
                               const_conn_iterator(inst.connections.end()));
+}
+
+pyg::PyIterator<std::pair<std::string, cbag::param_t>> params_iter(const c_instance &inst) {
+    return pyg::make_iterator(const_param_iterator(inst.params.begin()),
+                              const_param_iterator(inst.params.end()));
 }
 
 bool has_terminal(const c_cellview &cv, const std::string &term) {
@@ -358,6 +394,8 @@ void bind_schematic(py::module &m) {
     pyg::declare_iterator<pysch::const_conn_iterator>();
     py_inst.def("connections", &pysch::connections_iter,
                 "Returns an iterator over all (terminal, net) tuples.");
+    pyg::declare_iterator<pysch::const_param_iterator>();
+    py_inst.def("params", &pysch::params_iter, "Returns an iterator over all parameters.");
 
     auto py_info = py::class_<cbag::sch::cellview_info>(m, "PySchCellViewInfo");
     py_info.doc() = "An information object describing a schematic master instance.";
