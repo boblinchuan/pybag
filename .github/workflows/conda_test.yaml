@@ -1,0 +1,97 @@
+# Testing if we can install Conda successfully. Sanity checking the CI flow.
+name: conda-test
+
+on: [push]
+
+env:
+  CONDA_ENV_NAME: conda_test
+
+jobs:
+  conda-cache:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash -el {0}
+    continue-on-error: true
+    outputs:
+      pytestOutput: ${{ steps.unit-tests.outputs.test }}
+    strategy:
+      matrix:
+        python-version: ["3.7"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v3.0.4
+        with:
+          activate-environment: ${{ env.CONDA_ENV_NAME }}
+          python-version: ${{ matrix.python-version }}
+          auto-activate-base: false
+      - name: Save Conda Env
+        # Workaround, this isn't working otherwise.
+        run: |
+          echo "CONDA=$CONDA"
+          echo "CONDA=$CONDA" >> "$GITHUB_ENV"
+      - name: Cache Conda env
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.CONDA }}/envs/${{ env.CONDA_ENV_NAME }}
+          key:
+            conda-test-conda-${{ runner.os }}--${{ runner.arch }}--${{
+            steps.get-date.outputs.today }}-${{
+            hashFiles('conda_test.yml') }}-${{
+            env.CACHE_NUMBER }}
+        env:
+          CACHE_NUMBER: 0
+        id: cache
+      - name: Update environment
+        run: |
+          echo "CONDA=$CONDA"
+          conda env update -n ${{ env.CONDA_ENV_NAME }} -f conda_test.yml
+          ls $CONDA/envs/
+        if: steps.cache.outputs.cache-hit != 'true'
+  conda-cache-load:
+    needs: conda-cache
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash -el {0}
+    continue-on-error: true
+    outputs:
+      pytestOutput: ${{ steps.unit-tests.outputs.test }}
+    strategy:
+      matrix:
+        python-version: ["3.7"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup conda
+        uses: conda-incubator/setup-miniconda@v3.0.4
+        with:
+          activate-environment: ${{ env.CONDA_ENV_NAME }}
+          python-version: ${{ matrix.python-version }}
+          auto-activate-base: false
+      - name: Save Conda Env
+        # Workaround, this isn't working otherwise.
+        run: |
+          echo "CONDA=$CONDA"
+          echo "CONDA=$CONDA" >> "$GITHUB_ENV"
+      - name: Cache Conda env
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.CONDA }}/envs/${{ env.CONDA_ENV_NAME }}
+          key:
+            conda-test-conda-${{ runner.os }}--${{ runner.arch }}--${{
+            steps.get-date.outputs.today }}-${{
+            hashFiles('conda_test.yml') }}-${{
+            env.CACHE_NUMBER }}
+        env:
+          CACHE_NUMBER: 0
+        id: cache
+      - name: Fail
+        run: exit 1
+        if: steps.cache.outputs.cache-hit != 'true'
