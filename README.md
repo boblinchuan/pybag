@@ -12,6 +12,16 @@ To build the `pybag` library, run `./run_test.sh`. This will compile `cbag` as w
 
 Running `./run_test.sh`requires the `PYBAG_PYTHON` environment variable be set to the Python from your Miniconda install from the setup process.
 
+### Building with OpenAccess Libraries
+
+Pybag (and the underlying cbag) can be compiled with the OpenAccess (OA) C++ libraries from Si2 to provide minor acceleration in creating OA views for tools such as Cadence Virtuoso. These libraries are **NOT required** for using BAG in general. If the OA libraries are not included, BAG can still create OA views using SKILL commands.
+
+To compile with these libraries, the following environment variables must be set:
+- `OA_INCLUDE_DIR`: Include directory.
+- `OA_LINK_DIR`: Link directory.
+
+Pybag has been tested with the OpenAccess 2.2 API. These features are included for legacy compatibility and are not actively maintained.
+
 ## Licensing
 
 This library is licensed under the Apache-2.0 license.  However, some source files are licensed
