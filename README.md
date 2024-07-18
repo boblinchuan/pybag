@@ -20,6 +20,8 @@ To compile with these libraries, the following environment variables must be set
 - `OA_INCLUDE_DIR`: Include directory.
 - `OA_LINK_DIR`: Link directory.
 
+Compiling with the OA libraries will add the `PyOADatabase` class to `core.pyi` after compile time. If `PyOADatabase` does not exist, then you did not compile with the OA libraries.
+
 Pybag has been tested with the OpenAccess 2.2 API. These features are included for legacy compatibility and are not actively maintained.
 
 ## Licensing
