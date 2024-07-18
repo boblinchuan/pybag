@@ -97,25 +97,26 @@ if(DEFINED ENV{OA_LINK_DIR})
   message("OA include directory: " $ENV{OA_INCLUDE_DIR})
   message("OA link directory: " $ENV{OA_LINK_DIR})
   pybind11_add_module(core
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/bbox.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/bbox_array.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/bbox_collection.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/core.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/enum_conv.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/gds.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/geometry.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/grid.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/interval.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/lay_objects.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/layout.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/logging.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/name.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/oa.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/rtree.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/schematic.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/tech.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/transform.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/bbox.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/bbox_array.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/bbox_collection.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/core.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/enum_conv.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/gds.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/geometry.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/grid.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/interval.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/lay_objects.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/layout.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/logging.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/name.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/oa.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/rtree.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/schematic.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/tech.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/pybag/transform.cpp
   )
+  target_compile_definitions(core PUBLIC OA_LINK_DIR=$ENV{OA_LINK_DIR})
 else()
   message("INFO: Building pybag without OpenAccess support.")
   pybind11_add_module(core
