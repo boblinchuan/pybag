@@ -1,6 +1,9 @@
 # PYBAG
 
-Python wrapper for [CBAG](https://github.com/ucb-art/cbag) library for BAG3++.
+Python wrapper for [cbag](https://github.com/ucb-art/cbag) library for BAG3++.
+
+Pybag provides `enum.py` and `core.pyi` as an interface between `BAG` and `cbag`. 
+`core.pyi` is created during `cbag` compilation and is not tracked by Git.
 
 ## Setup
 
