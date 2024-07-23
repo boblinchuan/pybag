@@ -150,6 +150,68 @@ class const_term_iterator {
     }
 };
 
+class const_conn_iterator {
+  public:
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = std::pair<std::string, std::string>;
+    using difference_type = cbag::util::sorted_map<std::string, std::string>::const_iterator::difference_type;
+    using pointer = const value_type *;
+    using reference = const value_type &;
+
+  private:
+    cbag::util::sorted_map<std::string, std::string>::const_iterator iter_;
+
+  public:
+    const_conn_iterator() = default;
+    const_conn_iterator(cbag::util::sorted_map<std::string, std::string>::const_iterator val) : iter_(std::move(val)) {}
+
+    bool operator==(const const_conn_iterator &other) const { return iter_ == other.iter_; }
+    bool operator!=(const const_conn_iterator &other) const { return iter_ != other.iter_; }
+
+    value_type operator*() const { return {iter_->first, iter_->second}; }
+
+    const_conn_iterator &operator++() {
+        ++iter_;
+        return *this;
+    }
+    const_conn_iterator operator++(int) {
+        const_conn_iterator ans(iter_);
+        operator++();
+        return ans;
+    }
+};
+
+class const_param_iterator {
+  public:
+    using iterator_category = std::forward_iterator_tag;
+    using value_type = std::pair<std::string, cbag::value_t>;
+    using difference_type = cbag::param_map::const_iterator::difference_type;
+    using pointer = const value_type *;
+    using reference = const value_type &;
+
+  private:
+    cbag::param_map::const_iterator iter_;
+
+  public:
+    const_param_iterator() = default;
+    const_param_iterator(cbag::param_map::const_iterator val) : iter_(std::move(val)) {}
+
+    bool operator==(const const_param_iterator &other) const { return iter_ == other.iter_; }
+    bool operator!=(const const_param_iterator &other) const { return iter_ != other.iter_; }
+
+    value_type operator*() const { return {iter_->first, iter_->second}; }
+
+    const_param_iterator &operator++() {
+        ++iter_;
+        return *this;
+    }
+    const_param_iterator operator++(int) {
+        const_param_iterator ans(iter_);
+        operator++();
+        return ans;
+    }
+};
+
 // python/C++ interface functions for cellview
 pyg::PyIterator<std::pair<std::string, c_instance>> inst_ref_iter(const c_cellview &cv) {
     return pyg::make_iterator(const_inst_iterator(cv.instances.begin()),
@@ -159,6 +221,16 @@ pyg::PyIterator<std::pair<std::string, c_instance>> inst_ref_iter(const c_cellvi
 pyg::PyIterator<std::pair<std::string, int>> terminals_iter(const c_cellview &cv) {
     return pyg::make_iterator(const_term_iterator(cv.terminals.begin()),
                               const_term_iterator(cv.terminals.end()));
+}
+
+pyg::PyIterator<std::pair<std::string, std::string>> connections_iter(const c_instance &inst) {
+    return pyg::make_iterator(const_conn_iterator(inst.connections.begin()),
+                              const_conn_iterator(inst.connections.end()));
+}
+
+pyg::PyIterator<std::pair<std::string, cbag::param_t>> params_iter(const c_instance &inst) {
+    return pyg::make_iterator(const_param_iterator(inst.params.begin()),
+                              const_param_iterator(inst.params.end()));
 }
 
 bool has_terminal(const c_cellview &cv, const std::string &term) {
@@ -238,8 +310,10 @@ void implement_netlist(
                                   cbag::sch::cellview_info(*cv_info_ptr));
     }
 
-    // don't add BAG_prim in dut and harness spectre netlists; only testbench netlist will define those
+    // don't add BAG_prim in dut and harness simulation netlists; only testbench netlist will define those
     if ((format == cbag::design_output::SPECTRE) && top_subckt)
+        append_file.clear();
+    else if ((format == cbag::design_output::NGSPICE) && top_subckt)
         append_file.clear();
 
     if (cv_netlist_list.size() != 0) {
@@ -319,6 +393,11 @@ void bind_schematic(py::module &m) {
                 "Check instance connections are valid", py::arg("pin_iter"));
     py_inst.def("get_connection", pysch::get_connection, "Get net connected to the given terminal.",
                 py::arg("term_name"));
+    pyg::declare_iterator<pysch::const_conn_iterator>();
+    py_inst.def("connections", &pysch::connections_iter,
+                "Returns an iterator over all (terminal, net) tuples.");
+    pyg::declare_iterator<pysch::const_param_iterator>();
+    py_inst.def("params", &pysch::params_iter, "Returns an iterator over all parameters.");
 
     auto py_info = py::class_<cbag::sch::cellview_info>(m, "PySchCellViewInfo");
     py_info.doc() = "An information object describing a schematic master instance.";
