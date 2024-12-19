@@ -1,0 +1,30 @@
+name: bag_py3d8
+channels:
+  - conda-forge
+  - anaconda
+  - defaults
+dependencies:
+  - matplotlib-base
+  - numpy-base
+  - pandoc
+  - pip
+  - pylint
+  - pyqt
+  - python=3.8
+  - setuptools
+  - scipy
+  - wheel
+  - zlib
+  - zstd
+  - pip:
+      - h5py
+      - ipython
+      - jinja2
+      - libpsf
+      - networkx
+      - psf-utils
+      - ruamel-yaml
+      - ruamel-yaml-clib
+      - sortedcontainers
+      - zmq
+prefix: /tools/C/bag/miniconda3/envs/bag_py3d8
