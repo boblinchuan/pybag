@@ -73,11 +73,11 @@ jobs:
         run: |
           cd setup
           mkdir install
-          cp setup_script.sh install/
+          cp setup_script-2204.sh install/
           cp render_template.py install/
           cp project-config.template install/
           cd install
-          ./setup_script.sh
+          ./setup_script-2204.sh
           cd ../../
       - name: Build cbag and pybag
         id: cpp-build
