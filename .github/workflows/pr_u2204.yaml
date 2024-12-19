@@ -74,8 +74,8 @@ jobs:
           cd setup
           mkdir install
           cp setup_script-2204.sh install/
-          cp render_template.py install/
-          cp project-config.template install/
+          cp render_template-2204.py install/
+          cp project-config-2204.template install/
           cd install
           ./setup_script-2204.sh
           cd ../../
