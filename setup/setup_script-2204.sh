@@ -3,8 +3,8 @@
 # CHANGE THIS
 export CONDA_ENV_PATH=${CONDA}/envs/bag_py3d8
 
-export CC=gcc
-export CXX=g++
+# export CC=gcc
+# export CXX=g++
 
 # cmake
 wget https://github.com/Kitware/CMake/releases/download/v3.17.0/cmake-3.17.0.tar.gz
