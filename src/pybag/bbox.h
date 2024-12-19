@@ -47,6 +47,8 @@ limitations under the License.
 #ifndef PYBAG_BBOX_H
 #define PYBAG_BBOX_H
 
+#include <optional>
+
 #include <pybind11/pybind11.h>
 
 #include <cbag/common/box_t.h>
