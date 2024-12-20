@@ -4,6 +4,7 @@ channels:
   - anaconda
   - defaults
 dependencies:
+  - fmt=8.0.1
   - matplotlib-base
   - numpy-base
   - pandoc
@@ -14,6 +15,7 @@ dependencies:
   - qt
   - setuptools
   - scipy
+  - spdlog=1.9.1
   - wheel
   - zlib
   - zstd
