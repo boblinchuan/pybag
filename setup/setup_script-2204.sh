@@ -1,7 +1,7 @@
 # Setup script
 
 # CHANGE THIS
-export CONDA_ENV_PATH=${CONDA}/envs/bag_py3d7_c
+export CONDA_ENV_PATH=${CONDA}/envs/bag_py3d8
 
 export CC=gcc
 export CXX=g++
