@@ -22,6 +22,9 @@ jobs:
       matrix:
         python-version: ["3.7"]
     steps:
+      - name: Get current date
+        id: get-date
+        run: echo "::set-output name=today::$(date +'%Y-%m-%d')"
       - name: Install packages
         run: |
           sudo apt update
@@ -110,6 +113,9 @@ jobs:
       matrix:
         python-version: ["3.7"]
     steps:
+      - name: Get current date
+        id: get-date
+        run: echo "::set-output name=today::$(date +'%Y-%m-%d')"
       - name: Checkout
         uses: actions/checkout@v3
         with:
