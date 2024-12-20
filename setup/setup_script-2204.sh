@@ -1,4 +1,5 @@
 # Setup script
+set -e  # Exit on failure
 
 # CHANGE THIS
 export CONDA_ENV_PATH=${CONDA}/envs/bag_py3d8
