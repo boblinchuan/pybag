@@ -7,7 +7,7 @@ on:
     - cron: '0 9 * * *'  # 9AM UTC = 2AM PST
 
 env:
-  CONDA_ENV_NAME: bag_py3d8
+  CONDA_ENV_NAME: bag_py3d7_c
 
 jobs:
   build:
