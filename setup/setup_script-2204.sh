@@ -33,7 +33,7 @@ cmake --build _build --target install -- -j 4
 cd ../
 
 # libfyaml
-git clone https://github.com/pantoniou/libfyaml.git
+git clone -b v0.9 https://github.com/pantoniou/libfyaml.git
 cd libfyaml
 ./bootstrap.sh
 ./configure --prefix=$CONDA_ENV_PATH
