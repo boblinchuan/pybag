@@ -1,6 +1,6 @@
 # Test if libfyaml can compile. Historically, we had an AVX issue with compiling on GCC-8 on Ubuntu 20.04.
 # This bug is resolved on GCC-9 and later.
-name: pybag-pr-ci
+name: test-libfyaml
 
 on:
   push:
@@ -42,7 +42,7 @@ jobs:
         run: |
           echo "CC=gcc-8" >> "$GITHUB_ENV"
           echo "CXX=g++-8" >> "$GITHUB_ENV"
-      - clone: Pull libfyaml
+      - name: Pull libfyaml
         run: git clone -b v0.9 https://github.com/pantoniou/libfyaml.git
       - name: Bootstrap
         run: |
