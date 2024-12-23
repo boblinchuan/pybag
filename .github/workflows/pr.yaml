@@ -88,6 +88,9 @@ jobs:
           export PYBAG_PYTHON=python
           echo "PYBAG_PYTHON=$PYBAG_PYTHON"
           ./run_test.sh
+          if [$? -neq 0]; then
+            exit 1
+          fi
       - name: Cache pybag build
         uses: actions/cache@v3
         with:
