@@ -46,11 +46,11 @@ jobs:
         run: git clone -b v0.9 https://github.com/pantoniou/libfyaml.git
       - name: Bootstrap
         run: |
-          cd libfyaml \
+          cd libfyaml
           ./bootstrap.sh
       - name: Configure
-        run: 
-          cd libfyaml \ 
+        run: |
+          cd libfyaml
           ./configure --prefix=$CONDA_ENV_PATH --disable-avx512f --disable-avx512dq --disable-avx512vl
       - name: Build
         run: 
