@@ -36,7 +36,9 @@ cd ../
 git clone -b v0.9 https://github.com/pantoniou/libfyaml.git
 cd libfyaml
 ./bootstrap.sh
-./configure --prefix=$CONDA_ENV_PATH
+# Disable AVX512 on gcc-8 machines
+# https://github.com/linbox-team/fflas-ffpack/issues/284
+./configure --prefix=$CONDA_ENV_PATH --disable-avx512f --disable-avx512dq --disable-avx512vl
 make -j12
 make install
 cd ../
