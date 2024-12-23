@@ -53,6 +53,6 @@ jobs:
           cd libfyaml
           ./configure --prefix=$CONDA_ENV_PATH --disable-avx512f --disable-avx512dq --disable-avx512vl
       - name: Build
-        run: 
+        run: |
           cd libfyaml
           make -j12
