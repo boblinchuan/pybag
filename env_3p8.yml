@@ -31,4 +31,3 @@ dependencies:
       - ruamel-yaml-clib
       - sortedcontainers
       - zmq
-prefix: /tools/C/bag/miniconda3/envs/bag_py3d8
