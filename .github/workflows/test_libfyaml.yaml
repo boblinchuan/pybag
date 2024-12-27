@@ -1,0 +1,57 @@
+# Test if libfyaml can compile. I encountered an AVX issue with compiling on GCC-8 on Ubuntu 20.04.
+# The chosen fix is to revert to an older version. Compatibility is likely not an issue.
+# Better solution is to disable AVX through compiler flags.
+# This bug is resolved on GCC-9 and later.
+name: test-libfyaml
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        shell: bash -el {0}
+    continue-on-error: true
+    outputs:
+      pytestOutput: ${{ steps.unit-tests.outputs.test }}
+    strategy:
+      matrix:
+        python-version: ["3.7"]
+    steps:
+      - name: Get current date
+        id: get-date
+        run: echo "::set-output name=today::$(date +'%Y-%m-%d')"
+      - name: Install packages
+        run: |
+          sudo apt update
+          sudo apt -y install \
+            autoconf \
+            curl \
+            gcc-8 \
+            g++-8 \
+            git \
+            libtool \
+            libltdl-dev \
+            pkg-config \
+            make \
+            libgl1-mesa-dev \
+      - name: Set GCC versions
+        # Workaround, this isn't working otherwise.
+        run: |
+          echo "CC=gcc-8" >> "$GITHUB_ENV"
+          echo "CXX=g++-8" >> "$GITHUB_ENV"
+      - name: Pull libfyaml
+        run: git clone -b v0.8 https://github.com/pantoniou/libfyaml.git
+      - name: Bootstrap
+        run: |
+          cd libfyaml
+          ./bootstrap.sh
+      - name: Configure
+        run: |
+          cd libfyaml
+          ./configure --prefix=$CONDA_ENV_PATH --disable-avx512f --disable-avx512dq --disable-avx512vl
+      - name: Build
+        run: |
+          cd libfyaml
+          make -j12

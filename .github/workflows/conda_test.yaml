@@ -41,7 +41,7 @@ jobs:
           key:
             conda-test-conda-${{ runner.os }}--${{ runner.arch }}--${{
             steps.get-date.outputs.today }}-${{
-            hashFiles('conda_test.yml') }}-${{
+            hashFiles('environment.yml') }}-${{
             env.CACHE_NUMBER }}
         env:
           CACHE_NUMBER: 0
@@ -49,7 +49,7 @@ jobs:
       - name: Update environment
         run: |
           echo "CONDA=$CONDA"
-          conda env update -n ${{ env.CONDA_ENV_NAME }} -f conda_test.yml
+          conda env update -n ${{ env.CONDA_ENV_NAME }} -f environment.yml
           ls $CONDA/envs/
         if: steps.cache.outputs.cache-hit != 'true'
   conda-cache-load:
@@ -87,11 +87,11 @@ jobs:
           key:
             conda-test-conda-${{ runner.os }}--${{ runner.arch }}--${{
             steps.get-date.outputs.today }}-${{
-            hashFiles('conda_test.yml') }}-${{
+            hashFiles('environment.yml') }}-${{
             env.CACHE_NUMBER }}
         env:
           CACHE_NUMBER: 0
         id: cache
-      - name: Fail
+      - name: Fail if cache was not found
         run: exit 1
         if: steps.cache.outputs.cache-hit != 'true'

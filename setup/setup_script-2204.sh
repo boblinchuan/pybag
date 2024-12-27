@@ -2,10 +2,10 @@
 set -e  # Exit on failure
 
 # CHANGE THIS
-export CONDA_ENV_PATH=${CONDA}/envs/bag_py3d7_c
+export CONDA_ENV_PATH=${CONDA}/envs/bag_py3d8
 
-export CC=gcc-8
-export CXX=g++-8
+export CC=gcc
+export CXX=g++
 
 # cmake
 wget https://github.com/Kitware/CMake/releases/download/v3.17.0/cmake-3.17.0.tar.gz
@@ -33,11 +33,7 @@ cmake --build _build --target install -- -j 4
 cd ../
 
 # libfyaml
-# Use an older version to avoid AVX compilation issues in gcc-8.
-# Better solution is to disable AVX512.
-# This is fixed in gcc-9.X
-# https://github.com/linbox-team/fflas-ffpack/issues/284
-git clone -b v0.8 https://github.com/pantoniou/libfyaml.git
+git clone -b v0.9 https://github.com/pantoniou/libfyaml.git
 cd libfyaml
 ./bootstrap.sh
 ./configure --prefix=$CONDA_ENV_PATH
@@ -63,7 +59,7 @@ cd boost_1_72_0
 # edit project-config.jam
 # Create by rendering python
 cd ../
-python render_template.py
+python render_template-2204.py
 
 # TODO: run ./b2
 cd boost_1_72_0
